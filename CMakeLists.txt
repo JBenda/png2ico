@@ -5,7 +5,7 @@ set(CMAKE_DEBUG_POSTFIX d)
 set(CMAKE_CXX_STANDAR 17)
 set(CMAKE_CXX_STANDAR_REQUIRED ON)
 
-set(CMAKE_LIB_DIR "C:/Users/lukas/Documents/Programming/Libs" CACHE PATH "path to lib Folder")
+set(CMAKE_LIB_DIR CACHE PATH "path to lib Folder")
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	add_compile_options( /std:c++17)
