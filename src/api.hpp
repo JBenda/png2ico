@@ -14,7 +14,7 @@ namespace fs = std::filesystem;
 
  + if _dst has no extension it's will saved as ".ico"
 */
-std::vector<std::string>&& ConvertToICO(const fs::path& _src, const fs::path& _dst, const unsigned int _options = 0);
+std::vector<std::string> ConvertToICO(const fs::path& _src, const fs::path& _dst, const unsigned int _options = 0);
 
 /**
 	\brief Conversion Options
