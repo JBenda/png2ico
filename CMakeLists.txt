@@ -12,15 +12,17 @@ else()
 	add_compile_options( -std=c++17 -Wall -pedantic -Wextra)
 endif()
 
-file(GLOB SOURCE_FILES_API "src/api.*" "${CMAKE_LIB_DIR}/CImg.h")
+file(GLOB SOURCE_FILES_API "src/api.*")
+
 
 add_library(png2ico ${SOURCE_FILES_API})
+target_include_directories(png2ico PRIVATE "${CMAKE_LIB_DIR}/CImg-2.6.7")
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 else()
 	target_link_libraries(png2ico ${CMAKE_LIB_DIR} stdc++fs)
 endif()
 
-file(GLOB SOURCE_FILES_CMD "main.cpp")
+file(GLOB SOURCE_FILES_CMD "src/main.cpp")
 
 add_executable(interface ${SOURCE_FILES_CMD})
 target_include_directories(interface PRIVATE src)
