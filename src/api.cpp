@@ -170,7 +170,7 @@ std::ostream& PrintPics(std::ostream& _os, cimg_library::CImg<px_t>& _img,
 
 		// ref http://cimg.eu/reference/structcimg__library_1_1CImg.html#a6a668c8b3f9d756264d1fb31b7a915fc
 		// linear interpolation
-		_img.resize(static_cast<const int>(itr->dim), static_cast<const int>(itr->dim), 1, 4, 3);
+		_img.resize(static_cast<const int>(itr->dim), static_cast<const int>(itr->dim), 1, 4, 5);
 		PrintBMP(_os, _img, _errStack);
 		if (!_errStack.empty()) return _os;
 	}

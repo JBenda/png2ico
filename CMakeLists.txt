@@ -29,7 +29,13 @@ endif()
 
 file(GLOB SOURCE_FILES_CMD "src/main.cpp")
 
-add_executable(interface ${SOURCE_FILES_CMD})
+if (WIN32)
+	add_executable(interface WIN32 ${SOURCE_FILES_CMD})
+	add_compile_definitions(WIN32)
+else()
+	add_executable(interface ${SOURCE_FILES_CMD})
+endif()
+
 target_include_directories(interface PRIVATE src)
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	target_link_libraries(interface png2ico)
