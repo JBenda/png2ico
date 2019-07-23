@@ -195,6 +195,8 @@ std::vector<std::string> ConvertToICO(const fs::path& _src, const fs::path& _dst
 	}
 	if (!errorStack.empty()) return std::move(errorStack);
 
+	image.resize(256, 256, 1, image.spectrum(), 5);
+
 	const int h = image.height();
 	const int w = image.width();
 	if (w != h || w != 256 || h != 256) {
@@ -205,17 +207,23 @@ std::vector<std::string> ConvertToICO(const fs::path& _src, const fs::path& _dst
 	fs::path dst(_dst);
 	if (!_dst.has_extension())
 		dst +=".ico";
+
 	std::ofstream icoFile(dst, std::ios::binary);
 	if (!icoFile) {
 		errorStack.push_back(sprint("can't open file to write: \"%s\"", dst.string().c_str()));
 	}
 	if (!errorStack.empty()) return std::move(errorStack);
 
-	unsigned int srcPngSize = static_cast<unsigned int>(fs::file_size(_src));
+	fs::path tmp = _src;
+	if (!(tmp.extension() == ".png" || tmp.extension() == ".PNG")) {
+		tmp = "tmp.png";
+		image.save(tmp.string().c_str());
+	}
+	unsigned int pngSize = static_cast<unsigned int>(fs::file_size(tmp));
 
 
 	const std::vector<ICOFile> subImgs = {
-		ICOFile(256, srcPngSize),
+		ICOFile(256, pngSize),
 		ICOFile(64),
 		ICOFile(48),
 		ICOFile(40),
@@ -228,14 +236,14 @@ std::vector<std::string> ConvertToICO(const fs::path& _src, const fs::path& _dst
 	if (!errorStack.empty()) return std::move(errorStack);
 
 	{
-		char* pngRawData = new char[srcPngSize];
-		std::ifstream srcPng(_src, std::ios::binary);
+		char* pngRawData = new char[pngSize];
+		std::ifstream srcPng(tmp, std::ios::binary);
 		if (!srcPng.good()) {
-			errorStack.push_back(sprint("failed to read file: %s", _src.string().c_str()));
+			errorStack.push_back(sprint("failed to read file: %s", tmp.string().c_str()));
 			return std::move(errorStack);
 		}
-		srcPng.read(pngRawData, srcPngSize);
-		icoFile.write(pngRawData, srcPngSize);
+		srcPng.read(pngRawData, pngSize);
+		icoFile.write(pngRawData, pngSize);
 		srcPng.close();
 	}
 
